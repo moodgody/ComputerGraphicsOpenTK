@@ -15,7 +15,8 @@ namespace ComputerGraphics
 {
     internal partial class OpenGLWindow : GameWindow
     {
-        KeyboardState input;
+        KeyboardState _input;
+        Matrix4 _transformation;
         delegate void NavigationFunction(float value);
         enum Navigations
         {
@@ -28,6 +29,7 @@ namespace ComputerGraphics
         Dictionary<Navigations, NavigationFunction> _navigationFunction = new Dictionary<Navigations, NavigationFunction>();
         private void LoadNavigationFunctions()
         {
+            _transformation = Matrix4.Identity;
             _navigationFunction.Add(Navigations.Forward, MoveTheModeltome);
             _navigationFunction.Add(Navigations.Backward, MoveTheModelAway);
             _navigationFunction.Add(Navigations.Left, MoveModelLeft);
@@ -42,9 +44,9 @@ namespace ComputerGraphics
 
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
-            input = KeyboardState;
+            _input = KeyboardState;
 
-            if (input.IsKeyDown(Keys.Escape))
+            if (_input.IsKeyDown(Keys.Escape))
             {
                 Dispose();
             }
@@ -58,21 +60,19 @@ namespace ComputerGraphics
 
         private Navigations GetNavigation()
         {
-            return input.IsKeyDown(Keys.Up) ? Navigations.Forward :
-                    input.IsKeyDown(Keys.Down) ? Navigations.Backward :
-                    input.IsKeyDown(Keys.Left) ? Navigations.Left :
-                    input.IsKeyDown(Keys.Right) ? Navigations.Right :
+            return _input.IsKeyDown(Keys.Up) ? Navigations.Forward :
+                    _input.IsKeyDown(Keys.Down) ? Navigations.Backward :
+                    _input.IsKeyDown(Keys.Left) ? Navigations.Left :
+                    _input.IsKeyDown(Keys.Right) ? Navigations.Right :
                     Navigations.None;
         }
 
         private void MoveTheModelAway(float v)
         {
-           
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(Vector3.UnitZ * v);
+           // _transformation = Transformation(Vector3.UnitZ * v, Vector3.Zero, Vector3.One);
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.Translate(Vector3.UnitZ * v);
         }
-
-
 
         private void RotateModelRight(float v)
         {
@@ -87,27 +87,38 @@ namespace ComputerGraphics
             GL.Rotate(v, Vector3.UnitY);
         }
 
-
-
         private void MoveTheModeltome(float v)
         {
-           
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(-Vector3.UnitZ * v);
+            _transformation *=  Matrix4.CreateTranslation(0.0f,0.01f,0.0f);
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.Translate(-Vector3.UnitZ * v);
         }
 
         private void MoveModelRight(float v)
         {
-           
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(Vector3.UnitX * v);
+           // _transformation = Transformation(Vector3.UnitX * v, Vector3.Zero, Vector3.One);
+            _transformation =_transformation * Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(5.0f));
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.Translate(Vector3.UnitX * v);
         }
 
         private void MoveModelLeft(float v)
         {
+            _transformation = _transformation * Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(-5.0f));
+           
+        }
+
+        private Matrix4 Transformation(Vector3 translationVector, Vector3 rotationVector,Vector3 scaleVector)
+        {
             
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(-Vector3.UnitX * v);
+            Matrix4 rotationZ = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotationVector.Z));
+            Matrix4 rotationX = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotationVector.X));
+            Matrix4 rotationY = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(rotationVector.Y));
+            Matrix4 scale = Matrix4.CreateScale(scaleVector);
+            Matrix4 translation = Matrix4.CreateTranslation(translationVector);
+            Matrix4 res = rotationX * rotationY * rotationZ * scale * translation;
+            
+            return res;
         }
     }
 }

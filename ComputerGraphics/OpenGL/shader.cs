@@ -50,7 +50,7 @@ namespace ComputerGraphics
 
             string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
 
-            if (infoLogFrag != System.String.Empty)
+            if (infoLogFrag == System.String.Empty)
             {
                 ShaderInfoLog = infoLogFrag;
                  Handle = GL.CreateProgram();
@@ -66,12 +66,22 @@ namespace ComputerGraphics
                 GL.DeleteShader(VertexShader);
             }
         }
-        public void Use()
+        public void Use(Matrix4 transformation )
         {
             GL.UseProgram(Handle);
+            int location = GL.GetUniformLocation(Handle, "transform");
+
+            GL.UniformMatrix4(location, true, ref transformation);
         }
 
-       
+        public void Use()
+        {
+            Matrix4 transformation = Matrix4.Identity;
+            GL.UseProgram(Handle);
+            int location = GL.GetUniformLocation(Handle, "transform");
+
+            GL.UniformMatrix4(location, true, ref transformation);
+        }
 
         protected virtual void Dispose(bool disposing)
         {

@@ -20,7 +20,7 @@ namespace ComputerGraphics
         int VertexArrayObject;
         public OpenGLWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
         {
-           
+            
             LoadNavigationFunctions();
         }
 
@@ -78,15 +78,18 @@ namespace ComputerGraphics
 
 
         }
-
+       
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             //Code goes here.
-
-
-            _shader.Use();
+            //Matrix4 rotation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(90.0f));
+            //Matrix4 scale = Matrix4.CreateScale(0.5f, 0.5f, 0.5f);
+            //_transformation = rotation * scale;
+            //_transformation = Matrix4.CreateTranslation(0.0f, 0.0f, 0.5f);
+            //_transformation = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(-45.0f));
+            _shader.Use(_transformation);
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
             Context.SwapBuffers();
