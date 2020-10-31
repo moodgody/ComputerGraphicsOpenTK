@@ -51,7 +51,7 @@ namespace ComputerGraphics
 
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
-            _shader.Use();
+            //_shader.Use();
             VertexArrayObject = GL.GenVertexArray();
             // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
             // 1. bind Vertex Array Object
@@ -84,10 +84,14 @@ namespace ComputerGraphics
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             //Code goes here.
+
+
             _shader.Use();
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
             Context.SwapBuffers();
+            
+            
             base.OnRenderFrame(args);
            
 
