@@ -50,7 +50,7 @@ namespace ComputerGraphics
 
             string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
 
-            if (infoLogFrag != System.String.Empty)
+            if (infoLogFrag == System.String.Empty)
             {
                 ShaderInfoLog = infoLogFrag;
                  Handle = GL.CreateProgram();
