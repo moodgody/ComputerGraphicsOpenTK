@@ -29,10 +29,10 @@ namespace ComputerGraphics
 
         protected override void OnUnload()
         {
-            //_shader.Dispose();
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            //GL.DeleteBuffer(VertexBufferObject);
-            foreach(var obj in _graphObjects)
+            _shader.Dispose();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.DeleteBuffer(VertexBufferObject);
+            foreach (var obj in _graphObjects)
             {
                 obj.OnUnload();
             }
@@ -44,40 +44,49 @@ namespace ComputerGraphics
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             //Code goes here
-            foreach (var obj in _graphObjects)
-            {
-                obj.OnLoad();
-            }
-           
+            _shader = new Shader("shader.vert", "shader.frag");
 
-            //_shader = new Shader("shader.vert", "shader.frag");
-            //float[] vertices = {
-            //                        -0.5f, -0.5f, 0.0f, //Bottom-left vertex
-            //                         0.5f, -0.5f, 0.0f, //Bottom-right vertex
-            //                         0.0f,  0.5f, 0.0f  //Top vertex
-            //                    };
-            //VertexBufferObject = GL.GenBuffer();
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            //GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            float[] vertices = LoadVertexArrayFromAllObjects();
 
-            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            //GL.EnableVertexAttribArray(0);
-            ////_shader.Use();
-            //VertexArrayObject = GL.GenVertexArray();
+            VertexArrayObject = GL.GenVertexArray();
             //// ..:: Initialization code (done once (unless your object frequently changes)) :: ..
             //// 1. bind Vertex Array Object
-            //GL.BindVertexArray(VertexArrayObject);
+            GL.BindVertexArray(VertexArrayObject);
             //// 2. copy our vertices array in a buffer for OpenGL to use
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            //GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            VertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
             //// 3. then set our vertex attributes pointers
-            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            //GL.EnableVertexAttribArray(0);
-
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.EnableVertexAttribArray(0);
             base.OnLoad();
 
-           
         }
+
+        private float[] LoadVertexArrayFromAllObjects()
+        {
+            List<Vector3> verticesBuffer = new List<Vector3>();
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnLoad(verticesBuffer);
+            }
+
+            float[] vertices = ConvertToFloatArray(verticesBuffer);
+            return vertices;
+        }
+
+        private float[] ConvertToFloatArray(List<Vector3> verticesBuffer)
+        {
+            List<float> buffer = new List<float>();
+            foreach(var vertice in verticesBuffer)
+            {
+                buffer.Add(vertice.X);
+                buffer.Add(vertice.Y);
+                buffer.Add(vertice.Z);
+            }
+            return buffer.ToArray();
+        }
+
         List<GraphObjects.GraphObject> _graphObjects = new List<ComputerGraphics.GraphObjects.GraphObject>();
         internal void AddGraph(GraphObject obj)
         {
@@ -97,25 +106,23 @@ namespace ComputerGraphics
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
-
+            _shader.Use();
             //Code goes here.
-            foreach(var obj in _graphObjects)
-            {
-                obj.OnRenderFrame(args);
-                
-            }
+            GL.BindVertexArray(VertexArrayObject);
+            DrawAllObjects(args);
             Context.SwapBuffers();
-            //_shader.Use();
-            //GL.BindVertexArray(VertexArrayObject);
-            //GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
-
-
-
             base.OnRenderFrame(args);
-           
+
 
         }
 
+        private void DrawAllObjects(FrameEventArgs args)
+        {
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnRenderFrame(args);
 
+            }
+        }
     }
 }

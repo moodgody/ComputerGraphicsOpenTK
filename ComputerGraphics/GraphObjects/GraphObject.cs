@@ -14,34 +14,33 @@ namespace ComputerGraphics.GraphObjects
 {
      class GraphObject 
     {
-        protected Shader _shader;
+        
         protected int VertexBufferObject;
         protected int VertexArrayObject;
-        protected string _vertexShaderPath;
-        protected string _fragmentShaderPath;
-
-        public GraphObject(string vertexShaderPath, string fragmentShaderPath)
+        protected int _start;
+        protected int _count;
+        public List<Vector3> Vertices { get; set; }
+        public GraphObject()
         {
-            _vertexShaderPath = vertexShaderPath;
-            _fragmentShaderPath = fragmentShaderPath;
-            _shader = new Shader(_vertexShaderPath, _fragmentShaderPath);
+            Vertices = new List<Vector3>();
         }
 
-        public virtual void OnLoad()
+        public virtual void OnLoad(List<Vector3> vertices)
         {
-
+            _start = vertices.Count;
+            vertices.AddRange(Vertices);
+            _count = Vertices.Count;
         }
        public virtual  void OnRenderFrame(FrameEventArgs args)
         {
-            _shader.Use();
-            GL.BindVertexArray(VertexArrayObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+           
+            
+           
         }
        public virtual void OnUnload()
         {
-            _shader.Dispose();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.DeleteBuffer(VertexBufferObject);
+           
+            
         }
        
     }

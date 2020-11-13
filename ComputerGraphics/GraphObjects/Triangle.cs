@@ -14,42 +14,28 @@ namespace ComputerGraphics.GraphObjects
 {
     class Triangle : GraphObject
     {
-        public float[] Vertices { get; set; }
-        public Triangle(string vertexShaderPath, string fragmentShaderPath) : base(vertexShaderPath, fragmentShaderPath)
+       
+        public Triangle() : base()
         {
-            float[] temp = {-0.5f, -0.5f, 0.0f, //Bottom-left vertex
-                                     0.5f, -0.5f, 0.0f, //Bottom-right vertex
-                                     0.0f,  0.5f, 0.0f  //Top vertex
-                                };
-            Vertices = temp;
+            LoadVertexBufferWithStandardShape();
+
         }
 
-        public override void OnLoad()
+        private void LoadVertexBufferWithStandardShape()
         {
-            
-            VertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
+            Vertices.Add(new Vector3(-0.5f, -0.5f, 0.0f));
+            Vertices.Add(new Vector3(0.5f, -0.5f, 0.0f));
+            Vertices.Add(new Vector3(0.0f, 0.5f, 0.0f));
+        }
 
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(0);
-            //_shader.Use();
-            VertexArrayObject = GL.GenVertexArray();
-            // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-            // 1. bind Vertex Array Object
-            GL.BindVertexArray(VertexArrayObject);
-            // 2. copy our vertices array in a buffer for OpenGL to use
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
-            // 3. then set our vertex attributes pointers
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(0);
-
-            base.OnLoad();
+        public override void OnLoad(List<Vector3> verticesBuffer)
+        {
+            base.OnLoad(verticesBuffer);
         }
 
         public override void OnRenderFrame(FrameEventArgs args)
         {
+            GL.DrawArrays(PrimitiveType.LineLoop, _start, _count);
             base.OnRenderFrame(args);
         }
 

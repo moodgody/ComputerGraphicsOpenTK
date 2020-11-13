@@ -39,19 +39,21 @@ namespace ComputerGraphics
              n.Size = new OpenTK.Mathematics.Vector2i(800, 600);
            using( OpenGLWindow ogl = new OpenGLWindow(GameWindowSettings.Default , NativeWindowSettings.Default))
             {
-                float[] temp = {-1.0f, -0.6f, 0.0f, //Bottom-left vertex
-                                     0.7f, -1.0f, 0.0f, //Bottom-right vertex
-                                     0.0f,  0.6f, 0.0f  //Top vertex
-                                };
-               
-                GraphObjects.Triangle t2 = new GraphObjects.Triangle("shader.vert", "shader.frag");
-                t2.Vertices = temp;
-                ogl.AddGraph(t2);
-                ogl.AddGraph(new GraphObjects.Triangle("shader.vert", "shader.frag"));
-               
-                
+                ConstructScene(ogl);
+
                 ogl.Run();
             }
+        }
+
+        private static void ConstructScene(OpenGLWindow ogl)
+        {
+            GraphObjects.Triangle t2 = new GraphObjects.Triangle();
+            t2.Vertices.Clear();
+            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-1.0f, -0.6f, 0.0f));
+            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-0.5f, -1.0f, 0.0f));
+            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(0.0f, 0.6f, 0.0f));
+            ogl.AddGraph(t2);
+            ogl.AddGraph(new GraphObjects.Triangle());
         }
     }
 }
