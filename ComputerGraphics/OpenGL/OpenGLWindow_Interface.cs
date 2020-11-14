@@ -46,11 +46,7 @@ namespace ComputerGraphics
                                      0.0f,  0.5f, 0.0f  //Top vertex
                                 };
             VertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(0);
+          
             //_shader.Use();
             VertexArrayObject = GL.GenVertexArray();
             // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
