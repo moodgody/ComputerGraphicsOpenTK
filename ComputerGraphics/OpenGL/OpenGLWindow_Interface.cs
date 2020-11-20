@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using ComputerGraphics.GraphObjects;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -31,6 +32,10 @@ namespace ComputerGraphics
             _shader.Dispose();
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.DeleteBuffer(VertexBufferObject);
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnUnload();
+            }
             base.OnUnload();
         }
 
@@ -40,30 +45,53 @@ namespace ComputerGraphics
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             //Code goes here
             _shader = new Shader("shader.vert", "shader.frag");
-            float[] vertices = {
-                                    -0.5f, -0.5f, 0.0f, //Bottom-left vertex
-                                     0.5f, -0.5f, 0.0f, //Bottom-right vertex
-                                     0.0f,  0.5f, 0.0f  //Top vertex
-                                };
-            VertexBufferObject = GL.GenBuffer();
-          
-            //_shader.Use();
+
+            float[] vertices = LoadVertexArrayFromAllObjects();
+
             VertexArrayObject = GL.GenVertexArray();
-            // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-            // 1. bind Vertex Array Object
+            //// ..:: Initialization code (done once (unless your object frequently changes)) :: ..
+            //// 1. bind Vertex Array Object
             GL.BindVertexArray(VertexArrayObject);
-            // 2. copy our vertices array in a buffer for OpenGL to use
+            //// 2. copy our vertices array in a buffer for OpenGL to use
+            VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
-            // 3. then set our vertex attributes pointers
+            //// 3. then set our vertex attributes pointers
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
-
             base.OnLoad();
 
-           
         }
 
+        private float[] LoadVertexArrayFromAllObjects()
+        {
+            List<Vector3> verticesBuffer = new List<Vector3>();
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnLoad(verticesBuffer);
+            }
+
+            float[] vertices = ConvertToFloatArray(verticesBuffer);
+            return vertices;
+        }
+
+        private float[] ConvertToFloatArray(List<Vector3> verticesBuffer)
+        {
+            List<float> buffer = new List<float>();
+            foreach(var vertice in verticesBuffer)
+            {
+                buffer.Add(vertice.X);
+                buffer.Add(vertice.Y);
+                buffer.Add(vertice.Z);
+            }
+            return buffer.ToArray();
+        }
+
+        List<GraphObjects.GraphObject> _graphObjects = new List<ComputerGraphics.GraphObjects.GraphObject>();
+        internal void AddGraph(GraphObject obj)
+        {
+            _graphObjects.Add(obj);
+        }
 
         protected override void OnResize(ResizeEventArgs e)
         {
@@ -78,21 +106,23 @@ namespace ComputerGraphics
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
-
-            //Code goes here.
-
-
             _shader.Use();
+            //Code goes here.
             GL.BindVertexArray(VertexArrayObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
+            DrawAllObjects(args);
             Context.SwapBuffers();
-            
-            
             base.OnRenderFrame(args);
-           
+
 
         }
 
+        private void DrawAllObjects(FrameEventArgs args)
+        {
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnRenderFrame(args);
 
+            }
+        }
     }
 }
