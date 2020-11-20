@@ -47,7 +47,7 @@ namespace ComputerGraphics
             _shader = new Shader("shader.vert", "shader.frag");
 
             float[] vertices = LoadVertexArrayFromAllObjects();
-
+            uint[] indices = LoadElementIndicesFromAllObjects();
             VertexArrayObject = GL.GenVertexArray();
             //// ..:: Initialization code (done once (unless your object frequently changes)) :: ..
             //// 1. bind Vertex Array Object
@@ -59,8 +59,24 @@ namespace ComputerGraphics
             //// 3. then set our vertex attributes pointers
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
+
+            ElementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
             base.OnLoad();
 
+        }
+
+        private uint[] LoadElementIndicesFromAllObjects()
+        {
+            List<uint> indicesBuffer = new List<uint>();
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnLoadElementIndices(indicesBuffer);
+            }
+
+           
+            return indicesBuffer.ToArray();
         }
 
         private float[] LoadVertexArrayFromAllObjects()
@@ -88,6 +104,9 @@ namespace ComputerGraphics
         }
 
         List<GraphObjects.GraphObject> _graphObjects = new List<ComputerGraphics.GraphObjects.GraphObject>();
+
+        public int ElementBufferObject { get; private set; }
+
         internal void AddGraph(GraphObject obj)
         {
             _graphObjects.Add(obj);
@@ -108,6 +127,7 @@ namespace ComputerGraphics
             GL.Clear(ClearBufferMask.ColorBufferBit);
             _shader.Use();
             //Code goes here.
+           
             GL.BindVertexArray(VertexArrayObject);
             DrawAllObjects(args);
             Context.SwapBuffers();
