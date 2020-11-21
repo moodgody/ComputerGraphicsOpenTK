@@ -21,7 +21,8 @@ namespace ComputerGraphics
         int VertexArrayObject;
         public OpenGLWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
         {
-           
+            Height = nativeWindowSettings.Size.Y;
+            Width = nativeWindowSettings.Size.X;
             LoadNavigationFunctions();
         }
 
@@ -39,7 +40,9 @@ namespace ComputerGraphics
             base.OnUnload();
         }
 
-  
+        public Matrix4 Model;
+        public Matrix4 View;
+        public Matrix4 Projection;
         protected override void OnLoad()
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -63,8 +66,21 @@ namespace ComputerGraphics
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+
+           // SetModelViewProjectionMatrices();
             base.OnLoad();
 
+        }
+
+        private void SetModelViewProjectionMatrices()
+        {
+            //Model = Matrix4.Identity;
+            //_shader.SetMatrix4("model", ref Model);
+           // _shader.SetMatrix4("view", ref _view);
+            //_shader.SetMatrix4("projection", ref _projection);
+            //_model = Matrix4.Identity;
+            //_view = Matrix4.CreateTranslation(0f, 0f, -0.3f);
+            //_projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Width / Height, 0.1f, 100.0f);
         }
 
         private uint[] LoadElementIndicesFromAllObjects()
@@ -106,6 +122,8 @@ namespace ComputerGraphics
         List<GraphObjects.GraphObject> _graphObjects = new List<ComputerGraphics.GraphObjects.GraphObject>();
 
         public int ElementBufferObject { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
         internal void AddGraph(GraphObject obj)
         {
@@ -114,20 +132,31 @@ namespace ComputerGraphics
 
         protected override void OnResize(ResizeEventArgs e)
         {
-
+            Height = e.Height;
+            Width = e.Width;
             GL.Viewport(0, 0, e.Width, e.Height);
+            Projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Width / Height, 0.1f, 100.0f);
+            View = Matrix4.CreateTranslation(0.0f,0.0f,-5.0f);
+            Model = Matrix4.Identity;
+            Projection = Matrix4.CreateOrthographicOffCenter(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f);
+            //Projection = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(45.0f));
+            
             base.OnResize(e);
 
 
 
         }
-
+        
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
+            
             _shader.Use();
             //Code goes here.
-           
+
+            _shader.SetMatrix4(Shader.ShaderMatrix.model, ref Model);
+            _shader.SetMatrix4(Shader.ShaderMatrix.view, ref View);
+            _shader.SetMatrix4(Shader.ShaderMatrix.projection, ref Projection);
             GL.BindVertexArray(VertexArrayObject);
             DrawAllObjects(args);
             Context.SwapBuffers();
@@ -138,9 +167,12 @@ namespace ComputerGraphics
 
         private void DrawAllObjects(FrameEventArgs args)
         {
+            
             foreach (var obj in _graphObjects)
             {
-                obj.OnRenderFrame(args);
+                
+               
+                obj.OnRenderFrame(args,this);
 
             }
         }

@@ -15,6 +15,12 @@ namespace ComputerGraphics
 {
     public class Shader : IDisposable
     {
+        public enum ShaderMatrix
+        {
+            model,
+            view,
+            projection
+        }
         int Handle;
         private bool disposedValue = false;
         public string ShaderInfoLog { get; private set; }
@@ -65,6 +71,16 @@ namespace ComputerGraphics
                 GL.DeleteShader(FragmentShader);
                 GL.DeleteShader(VertexShader);
             }
+        }
+        /// <summary>
+        /// Bind matrix to shader matrix
+        /// </summary>
+        /// <param name="nameInShader"></param>
+        /// <param name="matrix"></param>
+        public void SetMatrix4(ShaderMatrix nameInShader,ref Matrix4 matrix)
+        {
+            int location = GL.GetUniformLocation(Handle, nameInShader.ToString());
+            GL.UniformMatrix4(location, true, ref matrix);
         }
         public void Use()
         {

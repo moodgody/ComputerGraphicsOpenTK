@@ -28,9 +28,9 @@ namespace ComputerGraphics.GraphObjects
         public float Height { get; set; }
        
 
-        public override void OnRenderFrame(FrameEventArgs args)
+        public override void OnRenderFrame(FrameEventArgs args,  OpenGLWindow parent)
         {
-            base.OnRenderFrame(args);
+            base.OnRenderFrame(args,parent);
             GL.DrawElements(PrimitiveType.LineLoop, 6, DrawElementsType.UnsignedInt,_v0);
             
             

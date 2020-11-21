@@ -49,13 +49,13 @@ namespace ComputerGraphics
         {
             GraphObjects.Triangle t2 = new GraphObjects.Triangle();
             t2.Vertices.Clear();
-            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-1.0f, -0.6f, 0.0f));
-            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-0.5f, -1.0f, 0.0f));
-            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(0.0f, 0.6f, 0.0f));
+            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(0.5f, -0.2f, 0.0f));
+            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-0.5f, 0.2f, 0.0f));
+            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(0.3f, 0.2f, 0.0f));
             ogl.AddGraph(t2);
             ogl.AddGraph(new GraphObjects.Triangle());
            
-            ogl.AddGraph(new GraphObjects.Rectangle(0f,0f,0.7f,0.3f));
+             ogl.AddGraph(new GraphObjects.Rectangle(0f,0f,0.7f,0.3f));
         }
     }
 }

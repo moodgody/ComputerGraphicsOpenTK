@@ -32,13 +32,11 @@ namespace ComputerGraphics.GraphObjects
             vertices.AddRange(Vertices);
             _count = Vertices.Count;
         }
-        protected Matrix4 model;
-        protected Matrix4 view;
-       public virtual  void OnRenderFrame(FrameEventArgs args)
+        
+        public virtual  void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
         {
 
-            model = Matrix4.Identity;
-            view = Matrix4.Identity;
+            
            
 
         }

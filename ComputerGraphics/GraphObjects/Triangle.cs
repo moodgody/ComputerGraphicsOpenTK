@@ -33,10 +33,12 @@ namespace ComputerGraphics.GraphObjects
             base.OnLoad(verticesBuffer);
         }
 
-        public override void OnRenderFrame(FrameEventArgs args)
+        public override void OnRenderFrame(FrameEventArgs args,  OpenGLWindow parent)
         {
-            GL.DrawArrays(PrimitiveType.LineLoop, _start, _count);
-            base.OnRenderFrame(args);
+            base.OnRenderFrame(args, parent);
+           
+            GL.DrawArrays(PrimitiveType.Triangles, _start, _count);
+            
         }
 
         public override void OnUnload()
