@@ -23,9 +23,9 @@ namespace ComputerGraphics.GraphObjects
 
         private void LoadVertexBufferWithStandardShape()
         {
-            Vertices.Add(new Vector3(-0.5f, -0.5f, 0.0f));
-            Vertices.Add(new Vector3(0.5f, -0.5f, 0.0f));
-            Vertices.Add(new Vector3(0.0f, 0.5f, 0.0f));
+            Vertices.Add(new Vector3(-0.5f, -0.5f, -0.5f)*2.0f);
+            Vertices.Add(new Vector3(0.5f, -0.5f, -0.5f)*2.0f);
+            Vertices.Add(new Vector3(0.0f, 0.5f, -0.5f)*2.0f);
         }
 
         public override void OnLoad(List<Vector3> verticesBuffer)
@@ -41,9 +41,6 @@ namespace ComputerGraphics.GraphObjects
             
         }
 
-        public override void OnUnload()
-        {
-            base.OnUnload();
-        }
+       
     }
 }

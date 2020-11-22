@@ -45,6 +45,7 @@ namespace ComputerGraphics
         public Matrix4 Projection;
         protected override void OnLoad()
         {
+            base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             //Code goes here
             _shader = new Shader("shader.vert", "shader.frag");
@@ -66,9 +67,9 @@ namespace ComputerGraphics
             ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
-
-           // SetModelViewProjectionMatrices();
-            base.OnLoad();
+            GL.Enable(EnableCap.DepthTest);
+            // SetModelViewProjectionMatrices();
+            
 
         }
 
@@ -135,11 +136,11 @@ namespace ComputerGraphics
             Height = e.Height;
             Width = e.Width;
             GL.Viewport(0, 0, e.Width, e.Height);
-            Projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(45.0f), Width / Height, 0.1f, 100.0f);
-            View = Matrix4.CreateTranslation(0.0f,0.0f,-5.0f);
+            float width = (float)Width;
+            float height = (float)Height;
+            View = Matrix4.Identity;//  Matrix4.CreateTranslation(0.0f,0.0f,5.0f);
             Model = Matrix4.Identity;
-            Projection = Matrix4.CreateOrthographicOffCenter(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f);
-            //Projection = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(45.0f));
+            Projection =   Matrix4.CreateOrthographicOffCenter(0.0f, width, 0.0f, height, 0.1f, 100.0f);
             
             base.OnResize(e);
 
@@ -149,16 +150,17 @@ namespace ComputerGraphics
         
         protected override void OnRenderFrame(FrameEventArgs args)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
             _shader.Use();
             //Code goes here.
 
+          
+            GL.BindVertexArray(VertexArrayObject);
+            DrawAllObjects(args);
             _shader.SetMatrix4(Shader.ShaderMatrix.model, ref Model);
             _shader.SetMatrix4(Shader.ShaderMatrix.view, ref View);
             _shader.SetMatrix4(Shader.ShaderMatrix.projection, ref Projection);
-            GL.BindVertexArray(VertexArrayObject);
-            DrawAllObjects(args);
             Context.SwapBuffers();
             base.OnRenderFrame(args);
 

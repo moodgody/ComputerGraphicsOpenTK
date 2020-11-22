@@ -47,15 +47,15 @@ namespace ComputerGraphics
 
         private static void ConstructScene(OpenGLWindow ogl)
         {
-            GraphObjects.Triangle t2 = new GraphObjects.Triangle();
-            t2.Vertices.Clear();
-            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(0.5f, -0.2f, 0.0f));
-            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-0.5f, 0.2f, 0.0f));
-            t2.Vertices.Add(new OpenTK.Mathematics.Vector3(0.3f, 0.2f, 0.0f));
-            ogl.AddGraph(t2);
+            //GraphObjects.Triangle t2 = new GraphObjects.Triangle();
+            //t2.Vertices.Clear();
+            //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(750.0f, 650.0f, 0.0f));
+            //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-200.0f, 0.0f, 0.0f));
+            //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(300.0f, 0.2f, 0.0f));
+            //ogl.AddGraph(t2);
             ogl.AddGraph(new GraphObjects.Triangle());
            
-             ogl.AddGraph(new GraphObjects.Rectangle(0f,0f,0.7f,0.3f));
+            // ogl.AddGraph(new GraphObjects.Rectangle(0f,0f,0.7f,0.3f));
         }
     }
 }

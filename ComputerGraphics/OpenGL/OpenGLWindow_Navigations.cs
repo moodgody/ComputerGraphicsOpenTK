@@ -42,6 +42,7 @@ namespace ComputerGraphics
 
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
+            base.OnUpdateFrame(args);
             input = KeyboardState;
 
             if (input.IsKeyDown(Keys.Escape))
@@ -53,7 +54,7 @@ namespace ComputerGraphics
                _navigationFunction[GetNavigation()](1);
             }
            
-            base.OnUpdateFrame(args);
+           
         }
 
         private Navigations GetNavigation()
@@ -67,9 +68,9 @@ namespace ComputerGraphics
 
         private void MoveTheModelAway(float v)
         {
-           
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(Vector3.UnitZ * v);
+            Model *= Matrix4.CreateTranslation(-Vector3.UnitZ);
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.Translate(Vector3.UnitZ * v);
         }
 
 
@@ -91,23 +92,23 @@ namespace ComputerGraphics
 
         private void MoveTheModeltome(float v)
         {
-           
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(-Vector3.UnitZ * v);
+            View *= Matrix4.CreateTranslation(Vector3.UnitZ );
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.Translate(-Vector3.UnitZ * v);
         }
 
         private void MoveModelRight(float v)
         {
-           
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(Vector3.UnitX * v);
+            View *= Matrix4.CreateTranslation(Vector3.UnitX );
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.Translate(Vector3.UnitX * v);
         }
-
+        private Vector3 dlta;
         private void MoveModelLeft(float v)
         {
-            
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Translate(-Vector3.UnitX * v);
+            View *= Matrix4.CreateTranslation(-Vector3.UnitX);
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.Translate(-Vector3.UnitX * v);
         }
     }
 }
