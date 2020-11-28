@@ -28,34 +28,18 @@ namespace ComputerGraphics.GraphObjects
         public float Height { get; set; }
        
 
-        public override void OnRenderFrame(FrameEventArgs args,  OpenGLWindow parent)
-        {
-            base.OnRenderFrame(args,parent);
-            GL.DrawElements(PrimitiveType.LineLoop, 6, DrawElementsType.UnsignedInt,_v0);
-            
-            
-        }
+       
 
-        public override void OnLoadElementIndices(List<uint> indicesBuffer)
-        {
-            base.OnLoadElementIndices(indicesBuffer);
-           
-            uint[] indices = {  // note that we start from 0!
-                                    _refpoint,_refpoint+1 , _refpoint+3,   // first triangle
-                                    _refpoint+1, _refpoint+2, _refpoint+3    // second triangle
-                                };
-            indicesBuffer.AddRange(indices);
-            
-        }
+       
 
         protected override void LoadVertexBufferWithStandardShape()
         {
             base.LoadVertexBufferWithStandardShape();
 
-            Vertices.Add(new Vector3(0.5f, 0.5f, 0.0f));    // Top Right
-            Vertices.Add(new Vector3(0.5f, -0.5f, 0.0f));   // Bottom Right
-            Vertices.Add(new Vector3(-0.5f, -0.5f, 0.0f));  // Bottom Left
-            Vertices.Add(new Vector3(-0.5f, 0.5f, 0.0f));   // Top Left
+            LocalVertices.Add(new Vector3(0.5f, 0.5f, 0.0f));    // Top Right
+            LocalVertices.Add(new Vector3(0.5f, -0.5f, 0.0f));   // Bottom Right
+            LocalVertices.Add(new Vector3(-0.5f, -0.5f, 0.0f));  // Bottom Left
+            LocalVertices.Add(new Vector3(-0.5f, 0.5f, 0.0f));   // Top Left
         }
     }
 }

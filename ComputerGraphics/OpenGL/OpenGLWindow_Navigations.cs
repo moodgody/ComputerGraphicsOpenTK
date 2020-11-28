@@ -68,7 +68,7 @@ namespace ComputerGraphics
 
         private void MoveTheModelAway(float v)
         {
-            Model *= Matrix4.CreateTranslation(-Vector3.UnitZ);
+            //Model *= Matrix4.CreateTranslation(-Vector3.UnitZ);
             //GL.MatrixMode(MatrixMode.Modelview);
             //GL.Translate(Vector3.UnitZ * v);
         }
@@ -92,21 +92,21 @@ namespace ComputerGraphics
 
         private void MoveTheModeltome(float v)
         {
-            View *= Matrix4.CreateTranslation(Vector3.UnitZ );
+            //View *= Matrix4.CreateTranslation(Vector3.UnitZ );
             //GL.MatrixMode(MatrixMode.Modelview);
             //GL.Translate(-Vector3.UnitZ * v);
         }
 
         private void MoveModelRight(float v)
         {
-            View *= Matrix4.CreateTranslation(Vector3.UnitX );
+           // View *= Matrix4.CreateTranslation(Vector3.UnitX );
             //GL.MatrixMode(MatrixMode.Modelview);
             //GL.Translate(Vector3.UnitX * v);
         }
         private Vector3 dlta;
         private void MoveModelLeft(float v)
         {
-            View *= Matrix4.CreateTranslation(-Vector3.UnitX);
+           // View *= Matrix4.CreateTranslation(-Vector3.UnitX);
             //GL.MatrixMode(MatrixMode.Modelview);
             //GL.Translate(-Vector3.UnitX * v);
         }

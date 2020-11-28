@@ -53,8 +53,9 @@ namespace ComputerGraphics
             //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-200.0f, 0.0f, 0.0f));
             //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(300.0f, 0.2f, 0.0f));
             //ogl.AddGraph(t2);
-            ogl.AddGraph(new GraphObjects.Triangle());
-           
+            //ogl.AddGraph(new GraphObjects.Triangle(new OpenTK.Mathematics.Vector3(-5.0f,-5.0f,-10.0f)));
+            ogl.AddGraph(new GraphObjects.Triangle(new OpenTK.Mathematics.Vector3(0.0f, 0.0f, -20.0f)));
+
             // ogl.AddGraph(new GraphObjects.Rectangle(0f,0f,0.7f,0.3f));
         }
     }

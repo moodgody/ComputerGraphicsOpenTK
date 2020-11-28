@@ -17,30 +17,34 @@ namespace ComputerGraphics.GraphObjects
        
         public Triangle() : base()
         {
-            LoadVertexBufferWithStandardShape();
+            _worldReferencePoint = Vector3.Zero;
+            
 
         }
-
-        private void LoadVertexBufferWithStandardShape()
+        public Triangle(Vector3 worldCoordinateReferencePoint ) : base()
         {
-            Vertices.Add(new Vector3(-0.5f, -0.5f, -0.5f)*2.0f);
-            Vertices.Add(new Vector3(0.5f, -0.5f, -0.5f)*2.0f);
-            Vertices.Add(new Vector3(0.0f, 0.5f, -0.5f)*2.0f);
+            _worldReferencePoint = worldCoordinateReferencePoint;
+            
+
         }
 
-        public override void OnLoad(List<Vector3> verticesBuffer)
-        {
-            base.OnLoad(verticesBuffer);
-        }
+       
+
+       
 
         public override void OnRenderFrame(FrameEventArgs args,  OpenGLWindow parent)
         {
             base.OnRenderFrame(args, parent);
            
-            GL.DrawArrays(PrimitiveType.Triangles, _start, _count);
+            GL.DrawArrays(PrimitiveType.LineLoop, 0, 3  );
             
         }
 
-       
+        protected override void LoadVertexBufferWithStandardShape()
+        {
+            LocalVertices.Add(new Vector3(-0.5f, -0.5f, -0.5f));
+            LocalVertices.Add(new Vector3(0.5f, -0.5f, -0.5f));
+            LocalVertices.Add(new Vector3(0.0f, 0.5f, -0.5f));
+        }
     }
 }
