@@ -35,7 +35,7 @@ namespace ComputerGraphics.GraphObjects
         public override void OnRenderFrame(FrameEventArgs args,  OpenGLWindow parent)
         {
             base.OnRenderFrame(args, parent);
-             Matrix4.CreateOrthographic(20.0f, 20.0f,  0.1f, 100.0f, out var p);
+             Matrix4.CreateOrthographic(2.0f, 2.0f,  0.1f, 100.0f, out var p);
             //var p = Matrix4.Identity;
            var model = Matrix4.Identity;
             var t1 = p * model;
@@ -48,6 +48,9 @@ namespace ComputerGraphics.GraphObjects
             model = model * Matrix4.CreateScale(40.0f);
             //var v = Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(-180.0f));
             model = new Matrix4(3.0f, 0f, 0f, -5.0f, 0f, 1f, 0f, 0.3f, 0f, 0f, 1f, 0.0f, 0f, 0f, 0f, 1);
+            model = new Matrix4(1.0f, 0f, 0f, -0.5f, 0f, 1f, 0f, 0.3f, 0f, 0f, 1f, 0.0f, 0f, 0f, 0f, 1);
+            model =    MatrixMath.TranslateZ(-0.5f);
+            
             var v = Matrix4.Identity;
             var t = p * v * model;
            
