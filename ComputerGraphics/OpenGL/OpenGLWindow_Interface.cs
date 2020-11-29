@@ -102,12 +102,14 @@ namespace ComputerGraphics
 
         protected override void OnResize(ResizeEventArgs e)
         {
+            base.OnResize(e);
             Height = e.Height;
             Width = e.Width;
             GL.Viewport(0, 0, e.Width, e.Height);
-              
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
             
-            base.OnResize(e);
 
 
 
