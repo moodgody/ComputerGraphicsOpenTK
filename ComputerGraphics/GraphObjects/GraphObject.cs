@@ -17,23 +17,57 @@ namespace ComputerGraphics.GraphObjects
         
        
        
-        protected Vector3 _worldReferencePoint;
+        public float Width { get; set; }
+        public float Height { get; set; }
         public List<Vector3> LocalVertices { get; set; }
+        public List<Vector3> VerticesColors { get; set; }
         public int VertexArrayObject { get; private set; }
         public int VertexBufferObject { get; private set; }
-
+        protected Shader _shader;
+        protected Vector3 _worldReferencePoint;
+        protected float[] _vertices;
+        Matrix4 _model;
+        Matrix4 _view;
+        Matrix4 _ModelView;
+        bool _valid;
         public GraphObject()
         {
             LocalVertices = new List<Vector3>();
-            LoadVertexBufferWithStandardShape();
+            VerticesColors = new List<Vector3>();
+            this.Width = 1.0f;
+            this.Height = 1.0f;
+            _worldReferencePoint = Vector3.Zero;
+           _valid = ImportStandtradShapeData() && UpdateModelViewMatrix();
+
         }
+        public GraphObject(Vector3 refpoint,float width, float height)
+        {
+            LocalVertices = new List<Vector3>();
+            VerticesColors = new List<Vector3>();
+            this.Width = width;
+            this.Height = height;
+            _worldReferencePoint = refpoint;
+            _valid = ImportStandtradShapeData() && UpdateModelViewMatrix();
+           
+        }
+
+        private bool UpdateModelViewMatrix()
+        {
+            bool res = true;
+            _model = MatrixMath.Translate(_worldReferencePoint) * MatrixMath.Scale(new Vector3(Width,Height,1.0f));
+            _view = Matrix4.Identity;
+
+            _ModelView = _view * _model;
+            return res;
+        }
+
         public virtual void OnLoad(Shader shader)
         {
             _shader = shader;
              OnLoadObject();
         }
      
-        protected Shader _shader;
+        
         private float[] ConvertToFloatArray(List<Vector3> verticesBuffer)
         {
             List<float> buffer = new List<float>();
@@ -50,33 +84,26 @@ namespace ComputerGraphics.GraphObjects
         protected void OnLoadObject()
         {
 
-            float[] vertices = {
-    // positions         // colors
-     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-};
+           
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
             
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), (3 * sizeof(float)));
             GL.EnableVertexAttribArray(1);
-
+            
         }
 
         public virtual  void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
         {
-           // Matrix4 model = Matrix4.CreateRotationX((float)MathHelper.DegreesToRadians(DateTime.Now.Second));
-          //  float dlta = (float)(DateTime.Now.Second) / 120.0f;
-          // var  model =  Matrix4.CreateTranslation(0.0f, 0.0f , 1.0f);
-          //model = model * Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(45.0f));
-          //  _shader.SetMatrix4(Shader.ShaderMatrix.model, ref model);
+            Matrix4.CreateOrthographic(20.0f, 20.0f, 0.1f, 100.0f, out var p);
+            var t = p * _ModelView;
+            _shader.SetMatrix4(Shader.ShaderMatrix.model, ref t);
 
         }
        public virtual void OnUnload()
@@ -87,8 +114,32 @@ namespace ComputerGraphics.GraphObjects
 
         
 
-        protected virtual void LoadVertexBufferWithStandardShape()
+        protected virtual bool ImportStandtradShapeData()
         {
+            
+            if (LocalVertices.Count != VerticesColors.Count)
+            {
+                NormalizeColorsList();
+            }
+            
+            List<Vector3> all = new List<Vector3>();
+            for(int i=0;i< LocalVertices.Count;i++)
+            {
+                all.Add(LocalVertices[i]);
+                all.Add(VerticesColors[i]);
+            }
+            _vertices = ConvertToFloatArray(all);
+            bool res = _vertices.Length == LocalVertices.Count * 3 * 2;
+            return res;
+        }
+
+        private void NormalizeColorsList()
+        {
+            Vector3 defaultColor = new Vector3(1.0f, 1.0f, 0.0f);
+            for(int i=VerticesColors.Count;i<LocalVertices.Count;i++)
+            {
+                VerticesColors.Add(defaultColor);
+            }
 
         }
     }

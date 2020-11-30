@@ -32,14 +32,15 @@ namespace ComputerGraphics.GraphObjects
 
        
 
-        protected override void LoadVertexBufferWithStandardShape()
+        protected override bool ImportStandtradShapeData()
         {
-            base.LoadVertexBufferWithStandardShape();
+            bool res =  base.ImportStandtradShapeData();
 
             LocalVertices.Add(new Vector3(0.5f, 0.5f, 0.0f));    // Top Right
             LocalVertices.Add(new Vector3(0.5f, -0.5f, 0.0f));   // Bottom Right
             LocalVertices.Add(new Vector3(-0.5f, -0.5f, 0.0f));  // Bottom Left
             LocalVertices.Add(new Vector3(-0.5f, 0.5f, 0.0f));   // Top Left
+            return res;
         }
     }
 }

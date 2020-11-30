@@ -7,7 +7,7 @@ namespace ComputerGraphics.GraphObjects
 {
     public static class MatrixMath
     {
-        public static Matrix4 Sclae(Vector3 scale)
+        public static Matrix4 Scale(Vector3 scale)
         {
             Matrix4 res = new Matrix4();
             res[0, 0] = scale.X > 0 ? scale.X:1.0f;
@@ -19,7 +19,7 @@ namespace ComputerGraphics.GraphObjects
         public static Matrix4 Sclae(float scale)
         {
             
-            return Sclae(new Vector3(scale));
+            return Scale(new Vector3(scale));
         }
         public static Matrix4 Translate(Vector3 value)
         {
