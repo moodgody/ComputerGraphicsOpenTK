@@ -1,4 +1,15 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿/********************************************************************************************
+ * Copyright (c) Computer Graphics Course by Fayoum University 
+ * Prof. Amr M. Gody, amg00@fayoum.edu.eg
+ * License: free for use and distribution for Educational purposes. It is required to keep this header comments on your code. 
+ * Purpose:             Parent Graph Object. This object has been developed for providing all basic functionalities for graph object. This object should be used as parent of any graph object. 
+ *
+ * Ver  Date         By     Purpose
+ * ---  ----------- -----   --------------------------------------------------------------------
+ * 01   2020-12-05  AMG     Created the initial version.
+ *************************************************************************************************/
+
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -23,13 +34,18 @@ namespace ComputerGraphics.GraphObjects
         public List<Vector3> VerticesColors { get; set; }
         public int VertexArrayObject { get; private set; }
         public int VertexBufferObject { get; private set; }
+        public int ElementBufferObject { get; private set; }
+
         protected Shader _shader;
         protected Vector3 _worldReferencePoint;
         protected float[] _vertices;
+        protected uint[] _indices;
         Matrix4 _model;
         Matrix4 _view;
         Matrix4 _ModelView;
         bool _valid;
+        protected bool _useElements;
+
         public GraphObject()
         {
             LocalVertices = new List<Vector3>();
@@ -87,10 +103,11 @@ namespace ComputerGraphics.GraphObjects
            
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
+            
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
-            
+            _useElements = ConfigureElemnetsBuffer();
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
 
@@ -101,15 +118,26 @@ namespace ComputerGraphics.GraphObjects
 
         public virtual  void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
         {
+            GL.BindVertexArray(VertexArrayObject);
             Matrix4.CreateOrthographic(20.0f, 20.0f, 0.1f, 100.0f, out var p);
             var t = p * _ModelView;
             _shader.SetMatrix4(Shader.ShaderMatrix.model, ref t);
+            if (_useElements)
+            {
+                GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            }
+            else
+            {
+                GL.DrawArrays(PrimitiveType.LineLoop, 0, LocalVertices.Count);
+            }
 
         }
        public virtual void OnUnload()
         {
-           
-            
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.DeleteBuffer(VertexBufferObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, ElementBufferObject);
+            GL.DeleteBuffer(ElementBufferObject);
         }
 
         
@@ -130,9 +158,25 @@ namespace ComputerGraphics.GraphObjects
             }
             _vertices = ConvertToFloatArray(all);
             bool res = _vertices.Length == LocalVertices.Count * 3 * 2;
+           
             return res;
         }
-
+        protected virtual bool ConfigureElemnetsBuffer()
+        {
+            bool res = true;
+            if(_indices!= null && _indices.Length>0)
+            {
+                ElementBufferObject = GL.GenBuffer();
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
+            }
+            else
+            {
+                res = false;
+            }
+            
+            return res;
+        }
         private void NormalizeColorsList()
         {
             Vector3 defaultColor = new Vector3(1.0f, 1.0f, 0.0f);

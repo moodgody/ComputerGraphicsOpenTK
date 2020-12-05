@@ -1,4 +1,15 @@
-﻿using OpenTK.Mathematics;
+﻿/********************************************************************************************
+ * Copyright (c) Computer Graphics Course by Fayoum University 
+ * Prof. Amr M. Gody, amg00@fayoum.edu.eg
+ * License: free for use and distribution for Educational purposes. It is required to keep this header comments on your code. 
+ * Purpose:            main window logic and user interface logic are here
+ *
+ * Ver  Date         By     Purpose
+ * ---  ----------- -----   --------------------------------------------------------------------
+ * 01   2020-12-05  AMG     Created the initial version.
+ *************************************************************************************************/
+
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Desktop;
 using System;
 using System.Collections.Generic;
@@ -48,16 +59,10 @@ namespace ComputerGraphics
 
         private static void ConstructScene(OpenGLWindow ogl)
         {
-            //GraphObjects.Triangle t2 = new GraphObjects.Triangle();
-            //t2.Vertices.Clear();
-            //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(750.0f, 650.0f, 0.0f));
-            //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(-200.0f, 0.0f, 0.0f));
-            //t2.Vertices.Add(new OpenTK.Mathematics.Vector3(300.0f, 0.2f, 0.0f));
-            //ogl.AddGraph(t2);
-            //ogl.AddGraph(new GraphObjects.Triangle(new OpenTK.Mathematics.Vector3(-5.0f,-5.0f,-10.0f)));
-            ogl.AddGraph(new GraphObjects.Triangle(new Vector3(5.0f, 5.0f, 0.0f),10.0f,5.0f));
-
-            // ogl.AddGraph(new GraphObjects.Rectangle(0f,0f,0.7f,0.3f));
+           
+            ogl.AddGraph(new GraphObjects.Rectangle(new Vector3(-5.0f, 5.0f, 0.0f), 10.0f, 5.0f));
+            ogl.AddGraph(new GraphObjects.Triangle(new Vector3(5.0f, 5.0f, 0.0f), 10.0f, 5.0f));
+            ogl.AddGraph(new GraphObjects.Sphere(new Vector3(5.0f, -5.0f, 0.0f), 5.0f));
         }
     }
 }

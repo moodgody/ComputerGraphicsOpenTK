@@ -1,4 +1,15 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿/********************************************************************************************
+ * Copyright (c) Computer Graphics Course by Fayoum University 
+ * Prof. Amr M. Gody, amg00@fayoum.edu.eg
+ * License: free for use and distribution for Educational purposes. It is required to keep this header comments on your code. 
+ * Purpose:             Rectangle Object
+ *
+ * Ver  Date         By     Purpose
+ * ---  ----------- -----   --------------------------------------------------------------------
+ * 01   2020-12-05  AMG     Created the initial version.
+ *************************************************************************************************/
+
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -14,33 +25,43 @@ namespace ComputerGraphics.GraphObjects
 {
     class Rectangle : GraphObject
     {
-        public Rectangle(float left, float bottom, float width, float height) : base()
+        public Rectangle() : base()
         {
-            Left = left;
-            Bottom = bottom;
-            Width = width;
-            Height = height;
+
         }
+        public Rectangle(Vector3 refpoint, float width, float height) : base(refpoint, width, height)
+        {
 
-        public float Left { get; set; }
-        public float Bottom { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
-       
+        }
+        public override void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
+        {
+            base.OnRenderFrame(args, parent);
+           
 
-       
 
-       
+        }
+        protected override bool ConfigureElemnetsBuffer()
+        {
+            uint[] temp = { 0, 1, 3,
+                            
+                            1,2,3 };
+            _indices = temp;
 
+            return base.ConfigureElemnetsBuffer();
+        }
         protected override bool ImportStandtradShapeData()
         {
-            bool res =  base.ImportStandtradShapeData();
-
             LocalVertices.Add(new Vector3(0.5f, 0.5f, 0.0f));    // Top Right
             LocalVertices.Add(new Vector3(0.5f, -0.5f, 0.0f));   // Bottom Right
             LocalVertices.Add(new Vector3(-0.5f, -0.5f, 0.0f));  // Bottom Left
             LocalVertices.Add(new Vector3(-0.5f, 0.5f, 0.0f));   // Top Left
-            return res;
+
+            
+            VerticesColors.Add(new Vector3(1.0f, 0.0f, 0.0f));
+            VerticesColors.Add(new Vector3(0.0f, 1.0f, 0.0f));
+            VerticesColors.Add(new Vector3(0.0f, 0.0f, 1.0f));
+            return base.ImportStandtradShapeData();
         }
+
     }
 }

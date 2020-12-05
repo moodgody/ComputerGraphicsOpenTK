@@ -1,4 +1,15 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿/********************************************************************************************
+ * Copyright (c) Computer Graphics Course by Fayoum University 
+ * Prof. Amr M. Gody, amg00@fayoum.edu.eg
+ * License: free for use and distribution for Educational purposes. It is required to keep this header comments on your code. 
+ * Purpose:             All overrides of Game window is provided here
+ *
+ * Ver  Date         By     Purpose
+ * ---  ----------- -----   --------------------------------------------------------------------
+ * 01   2020-12-05  AMG     Created the initial version.
+ *************************************************************************************************/
+
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -15,7 +26,7 @@ namespace ComputerGraphics
 {
     internal partial class OpenGLWindow : GameWindow
     {
-           public override void Close()
+        public override void Close()
         {
             base.Close();
         }
@@ -55,11 +66,6 @@ namespace ComputerGraphics
             base.Dispose(disposing);
         }
 
-        protected override void OnClosed()
-        {
-            base.OnClosed();
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
@@ -90,8 +96,7 @@ namespace ComputerGraphics
         {
             base.OnKeyUp(e);
         }
-
-  
+ 
         protected override void OnMinimized(MinimizedEventArgs e)
         {
             base.OnMinimized(e);
@@ -142,18 +147,15 @@ namespace ComputerGraphics
             base.OnRefresh();
         }
 
- 
         protected override void OnRenderThreadStarted()
         {
             base.OnRenderThreadStarted();
         }
-
-  
+ 
         protected override void OnTextInput(TextInputEventArgs e)
         {
             base.OnTextInput(e);
         }
-
-    
+   
     }
 }

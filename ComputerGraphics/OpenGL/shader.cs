@@ -1,4 +1,15 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿/********************************************************************************************
+ * Copyright (c) Computer Graphics Course by Fayoum University 
+ * Prof. Amr M. Gody, amg00@fayoum.edu.eg
+ * License: free for use and distribution for Educational purposes. It is required to keep this header comments on your code. 
+ * Purpose:             Shader interface logic has been provided here
+ *
+ * Ver  Date         By     Purpose
+ * ---  ----------- -----   --------------------------------------------------------------------
+ * 01   2020-12-05  AMG     Created the initial version.
+ *************************************************************************************************/
+
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;

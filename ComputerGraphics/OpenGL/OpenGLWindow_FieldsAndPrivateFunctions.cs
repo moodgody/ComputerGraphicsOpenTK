@@ -2,7 +2,7 @@
  * Copyright (c) Computer Graphics Course by Fayoum University 
  * Prof. Amr M. Gody, amg00@fayoum.edu.eg
  * License: free for use and distribution for Educational purposes. It is required to keep this header comments on your code. 
- * Purpose:             Public methods and Properties have been developed here
+ * Purpose:             All private functions and fields of the Game window has been provided here
  *
  * Ver  Date         By     Purpose
  * ---  ----------- -----   --------------------------------------------------------------------
@@ -27,23 +27,26 @@ namespace ComputerGraphics
 {
     internal partial class OpenGLWindow : GameWindow
     {
-        #region Properties
-        public Shader ShaderProgram;
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-        #endregion
+        List<GraphObjects.GraphObject> _graphObjects = new List<ComputerGraphics.GraphObjects.GraphObject>();
+        private void DrawAllObjects(FrameEventArgs args)
+        {
 
-        #region Methods
-        public OpenGLWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
-        {
-            Height = nativeWindowSettings.Size.Y;
-            Width = nativeWindowSettings.Size.X;
-            LoadNavigationFunctions();
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnRenderFrame(args, this);
+            }
         }
-        public void AddGraph(GraphObject obj)
+        private void LoadVertexArrayInAllObjects()
         {
-            _graphObjects.Add(obj);
-        } 
-        #endregion
+
+            foreach (var obj in _graphObjects)
+            {
+                obj.OnLoad(ShaderProgram);
+            }
+
+
+
+        }
+
     }
 }
