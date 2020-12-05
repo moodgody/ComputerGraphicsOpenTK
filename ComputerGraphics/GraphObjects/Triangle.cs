@@ -36,9 +36,16 @@ namespace ComputerGraphics.GraphObjects
        public override void OnRenderFrame(FrameEventArgs args,  OpenGLWindow parent)
         {
             base.OnRenderFrame(args, parent);
-           
-            
-            
+            if (_useElements)
+            {
+                GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            }
+            else
+            {
+                GL.DrawArrays(PrimitiveType.LineLoop, 0, LocalVertices.Count);
+            }
+
+
         }
        protected override bool ConfigureElemnetsBuffer()
         {

@@ -23,7 +23,14 @@ namespace ComputerGraphics.GraphObjects
         public override void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
         {
             base.OnRenderFrame(args, parent);
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+            if (_useElements)
+            {
+                GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            }
+            else
+            {
+                GL.DrawArrays(PrimitiveType.LineLoop, 0, LocalVertices.Count);
+            }
 
         }
 
@@ -34,7 +41,7 @@ namespace ComputerGraphics.GraphObjects
 
         protected override bool ImportStandtradShapeData()
         {
-            var MeshPolygons = MeshElement.Sphere(Radius);
+            var MeshPolygons = MeshElement.Sphere(0.5);
             for (int i = 0; i < MeshPolygons.Length; i++)
             {
                 //GL.Normal3(MeshPolygons[i].Normal);

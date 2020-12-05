@@ -122,14 +122,7 @@ namespace ComputerGraphics.GraphObjects
             Matrix4.CreateOrthographic(20.0f, 20.0f, 0.1f, 100.0f, out var p);
             var t = p * _ModelView;
             _shader.SetMatrix4(Shader.ShaderMatrix.model, ref t);
-            if (_useElements)
-            {
-                GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
-            }
-            else
-            {
-                GL.DrawArrays(PrimitiveType.LineLoop, 0, LocalVertices.Count);
-            }
+            
 
         }
        public virtual void OnUnload()
