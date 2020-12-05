@@ -23,14 +23,8 @@ namespace ComputerGraphics.GraphObjects
         public override void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
         {
             base.OnRenderFrame(args, parent);
-            if (_useElements)
-            {
-                GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
-            }
-            else
-            {
-                GL.DrawArrays(PrimitiveType.Quads, 0, LocalVertices.Count);
-            }
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
         }
 
         protected override bool ConfigureElemnetsBuffer()
@@ -47,7 +41,7 @@ namespace ComputerGraphics.GraphObjects
                 for (int j = 0; j < MeshPolygons[i].Vertices.Length; j++)
                 {
                     LocalVertices.Add(MeshPolygons[i].Vertices[j]);
-                    //GL.Vertex3(MeshPolygons[i].Vertices[j]);
+                    
                 }
 
             }
