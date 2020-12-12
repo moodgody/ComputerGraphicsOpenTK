@@ -18,6 +18,42 @@ namespace ComputerGraphics.GraphObjects
 {
     public static class MatrixMath
     {
+        public static Matrix4 OrthogonalProjection(float ViewPortWidth, float viewPortHeight, float z_near, float z_far)
+        {
+            Matrix4 res = Matrix4.Identity;
+            // x = 
+            float depth = z_far - z_near;
+            res[0, 0] = 2.0f / ViewPortWidth;
+            res[1, 1] = 2.0f / viewPortHeight;
+            res[2, 2] = -1.0f / depth;
+            res[2, 3] = z_near / depth;
+
+
+            return res;
+        }
+        public static Matrix4 PerspectiveProjection(double fov, float imageAspectRatio, float z_near, float z_far)
+        {
+            Matrix4 res = Matrix4.Identity;
+            // x = 
+
+           
+            float scale =  (float)MathHelper.Tan( fov *0.5) * z_near;
+            float r = imageAspectRatio * scale;
+            float l = -r;
+            float t = scale;
+            float b = -t;
+            res[0, 0] = 2.0f * z_near / (r - l);
+            res[1, 1] = 2.0f * z_near / (t - b);
+            res[2, 0] = (r + l) / (r - l);
+            res[2, 1] = (t + b) / (t - b);
+            res[2, 2] = -(z_far + z_near) / (z_far - z_near);
+            res[2, 3] = -1.0f;
+
+            res[3, 2] = -2.0f * z_far * z_near / (z_far - z_near);
+            //res[3, 3] = 0.0f;
+
+            return res;
+        }
         public static Matrix4 Scale(Vector3 scale)
         {
             Matrix4 res = new Matrix4();

@@ -120,7 +120,9 @@ namespace ComputerGraphics.GraphObjects
         {
             GL.BindVertexArray(VertexArrayObject);
             Matrix4.CreateOrthographic(20.0f, 20.0f, 0.1f, 100.0f, out var p);
-            var t = p * _ModelView;
+            var p2 = MatrixMath.OrthogonalProjection(20.0f, 20.0f, 0.1f, 100.0f);
+            var p3 = MatrixMath.PerspectiveProjection(MathHelper.DegreesToRadians(90.0), 1.0f, 0.1f, 100.0f);
+            var t = p3 * _ModelView;
             _shader.SetMatrix4(Shader.ShaderMatrix.model, ref t);
             
 
