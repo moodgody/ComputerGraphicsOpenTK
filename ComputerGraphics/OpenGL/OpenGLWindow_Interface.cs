@@ -29,15 +29,13 @@ namespace ComputerGraphics
     {
         #region Properties
         public Shader ShaderProgram;
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public Matrix4 Projection { get; private set; }
         #endregion
 
         #region Methods
         public OpenGLWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings) : base(gameWindowSettings, nativeWindowSettings)
         {
-            Height = nativeWindowSettings.Size.Y;
-            Width = nativeWindowSettings.Size.X;
+           
             LoadNavigationFunctions();
         }
         public void AddGraph(GraphObject obj)

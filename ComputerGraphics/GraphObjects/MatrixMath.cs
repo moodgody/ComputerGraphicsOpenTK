@@ -31,22 +31,22 @@ namespace ComputerGraphics.GraphObjects
 
             return res;
         }
-        public static Matrix4 PerspectiveProjection(double fov, float imageAspectRatio, float z_near, float z_far)
+        public static Matrix4 PerspectiveProjection(double fov, float imageAspectRatio,float width,float height, float z_near, float z_far)
         {
             Matrix4 res = Matrix4.Identity;
             // x = 
 
-           
+            float depth = z_far - z_near;
             float scale =  (float)MathHelper.Tan( fov *0.5) * z_near;
             float r = imageAspectRatio * scale;
             float l = -r;
             float t = scale;
             float b = -t;
-            res[0, 0] = 2.0f * z_near / (r - l);
-            res[1, 1] = 2.0f * z_near / (t - b);
+            res[0, 0] = 4.0f/width * z_near / (r - l);
+            res[1, 1] = 4.0f/height * z_near / (t - b);
             res[2, 0] = (r + l) / (r - l);
             res[2, 1] = (t + b) / (t - b);
-            res[2, 2] = -(z_far + z_near) / (z_far - z_near);
+            res[2, 2] = -1/depth* (z_far + z_near) / (z_far - z_near);
             res[2, 3] = -1.0f;
 
             res[3, 2] = -2.0f * z_far * z_near / (z_far - z_near);

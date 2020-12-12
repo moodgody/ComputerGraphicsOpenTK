@@ -26,6 +26,8 @@ namespace ComputerGraphics
 {
     internal partial class OpenGLWindow : GameWindow
     {
+       
+
         protected override void OnUnload()
         {
             base.OnUnload();
@@ -56,12 +58,15 @@ namespace ComputerGraphics
         protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
-            Height = e.Height;
-            Width = e.Width;
-            GL.Viewport(0, 0, e.Width, e.Height);
+            float height = e.Height;
+            float width = e.Width;
+            float viewport_world_width_units = 30.0f;
+            float viewport_world_Height_units = 20.0f;
 
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
+            float aspectRatio =(viewport_world_width_units/ width) / (viewport_world_Height_units/ height);
+            GL.Viewport(0, 0, e.Width, e.Height);
+            
+            this.Projection = GraphObjects.MatrixMath.PerspectiveProjection(MathHelper.DegreesToRadians(45.0), aspectRatio, viewport_world_width_units, viewport_world_Height_units, 0.1f, 100.0f); 
 
 
 

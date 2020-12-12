@@ -26,8 +26,6 @@ namespace ComputerGraphics.GraphObjects
      class GraphObject 
     {
         
-       
-       
         public float Width { get; set; }
         public float Height { get; set; }
         public List<Vector3> LocalVertices { get; set; }
@@ -35,7 +33,6 @@ namespace ComputerGraphics.GraphObjects
         public int VertexArrayObject { get; private set; }
         public int VertexBufferObject { get; private set; }
         public int ElementBufferObject { get; private set; }
-
         protected Shader _shader;
         protected Vector3 _worldReferencePoint;
         protected float[] _vertices;
@@ -45,7 +42,6 @@ namespace ComputerGraphics.GraphObjects
         Matrix4 _ModelView;
         bool _valid;
         protected bool _useElements;
-
         public GraphObject()
         {
             LocalVertices = new List<Vector3>();
@@ -66,7 +62,6 @@ namespace ComputerGraphics.GraphObjects
             _valid = ImportStandtradShapeData() && UpdateModelViewMatrix();
            
         }
-
         private bool UpdateModelViewMatrix()
         {
             bool res = true;
@@ -76,14 +71,11 @@ namespace ComputerGraphics.GraphObjects
             _ModelView = _view * _model;
             return res;
         }
-
         public virtual void OnLoad(Shader shader)
         {
             _shader = shader;
              OnLoadObject();
         }
-     
-        
         private float[] ConvertToFloatArray(List<Vector3> verticesBuffer)
         {
             List<float> buffer = new List<float>();
@@ -96,7 +88,6 @@ namespace ComputerGraphics.GraphObjects
             }
             return buffer.ToArray();
         }
-
         protected void OnLoadObject()
         {
 
@@ -115,14 +106,11 @@ namespace ComputerGraphics.GraphObjects
             GL.EnableVertexAttribArray(1);
             
         }
-
         public virtual  void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
         {
             GL.BindVertexArray(VertexArrayObject);
             Matrix4.CreateOrthographic(20.0f, 20.0f, 0.1f, 100.0f, out var p);
-            var p2 = MatrixMath.OrthogonalProjection(20.0f, 20.0f, 0.1f, 100.0f);
-            var p3 = MatrixMath.PerspectiveProjection(MathHelper.DegreesToRadians(90.0), 1.0f, 0.1f, 100.0f);
-            var t = p3 * _ModelView;
+            var t = parent.Projection * _ModelView;
             _shader.SetMatrix4(Shader.ShaderMatrix.model, ref t);
             
 
@@ -134,10 +122,7 @@ namespace ComputerGraphics.GraphObjects
             GL.BindBuffer(BufferTarget.ArrayBuffer, ElementBufferObject);
             GL.DeleteBuffer(ElementBufferObject);
         }
-
-        
-
-        protected virtual bool ImportStandtradShapeData()
+       protected virtual bool ImportStandtradShapeData()
         {
             
             if (LocalVertices.Count != VerticesColors.Count)
@@ -156,7 +141,7 @@ namespace ComputerGraphics.GraphObjects
            
             return res;
         }
-        protected virtual bool ConfigureElemnetsBuffer()
+       protected virtual bool ConfigureElemnetsBuffer()
         {
             bool res = true;
             if(_indices!= null && _indices.Length>0)
@@ -172,7 +157,7 @@ namespace ComputerGraphics.GraphObjects
             
             return res;
         }
-        private void NormalizeColorsList()
+       private void NormalizeColorsList()
         {
             Vector3 defaultColor = new Vector3(1.0f, 1.0f, 0.0f);
             for(int i=VerticesColors.Count;i<LocalVertices.Count;i++)
