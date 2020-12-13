@@ -91,17 +91,21 @@ namespace ComputerGraphics.GraphObjects
         protected void OnLoadObject()
         {
 
-           
+            //1- Identify Vertex array Object of this Graph object
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
             
+            //2- Load Vertex Array Buffer of this Object
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
             _useElements = ConfigureElemnetsBuffer();
+
+            //3- Enable Attribute 0 for position
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
             GL.EnableVertexAttribArray(0);
-
+            
+            //4- Enable Attribute 1 for Color
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), (3 * sizeof(float)));
             GL.EnableVertexAttribArray(1);
             

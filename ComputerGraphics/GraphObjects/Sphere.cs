@@ -34,10 +34,7 @@ namespace ComputerGraphics.GraphObjects
 
         }
 
-        protected override bool ConfigureElemnetsBuffer()
-        {
-            return base.ConfigureElemnetsBuffer();
-        }
+      
 
         protected override bool ImportStandtradShapeData()
         {
