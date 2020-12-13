@@ -109,7 +109,7 @@ namespace ComputerGraphics.GraphObjects
         public virtual  void OnRenderFrame(FrameEventArgs args, OpenGLWindow parent)
         {
             GL.BindVertexArray(VertexArrayObject);
-            Matrix4.CreateOrthographic(20.0f, 20.0f, 0.1f, 100.0f, out var p);
+           
             var t = parent.Projection * _ModelView;
             _shader.SetMatrix4(Shader.ShaderMatrix.model, ref t);
             
