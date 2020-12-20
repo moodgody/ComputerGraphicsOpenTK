@@ -30,7 +30,8 @@ namespace ComputerGraphics
         {
             model,
             view,
-            projection
+            projection,
+            lightColor
         }
         int Handle;
         private bool disposedValue = false;
@@ -55,6 +56,7 @@ namespace ComputerGraphics
             GL.ShaderSource(VertexShader, VertexShaderSource);
 
             var FragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+            
             GL.ShaderSource(FragmentShader, FragmentShaderSource);
             //Then, we compile the shaders and check for errors.
             GL.CompileShader(VertexShader);
@@ -67,7 +69,7 @@ namespace ComputerGraphics
 
             string infoLogFrag = GL.GetShaderInfoLog(FragmentShader);
 
-            if (infoLogFrag == System.String.Empty)
+            if (infoLogFrag == System.String.Empty && infoLogVert == string.Empty)
             {
                 ShaderInfoLog = infoLogFrag;
                  Handle = GL.CreateProgram();
@@ -92,6 +94,11 @@ namespace ComputerGraphics
         {
             int location = GL.GetUniformLocation(Handle, nameInShader.ToString());
             GL.UniformMatrix4(location, true, ref matrix);
+        }
+        public void SetVector3(ShaderMatrix nameInShader,  Vector3 vec3)
+        {
+            int location = GL.GetUniformLocation(Handle, nameInShader.ToString());
+            GL.Uniform3(location,  vec3.X, vec3.Y, vec3.Z);
         }
         public void Use()
         {

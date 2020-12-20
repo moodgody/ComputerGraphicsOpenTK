@@ -45,16 +45,24 @@ namespace ComputerGraphics
             base.OnClosed();
 
         }
+        /// <summary>
+        /// Create Shader
+        /// </summary>
         protected override void OnLoad()
         {
             base.OnLoad();
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             //Code goes here
-            ShaderProgram = new Shader("shader.vert", "shader.frag");
+            ShaderProgram = new Shader(@"Shaders\shader_Light1.vert", @"Shaders\shader_Light1.frag");
+            LightingShaderProgram = new Shader(@"Shaders\shader_Light.vert", @"Shaders\shader_Light.frag");
+            OnLoadLights();
             LoadVertexArrayInAllObjects();
 
 
         }
+
+        
+
         protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
@@ -76,14 +84,22 @@ namespace ComputerGraphics
         protected override void OnRenderFrame(FrameEventArgs args)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            ShaderProgram.Use();
-           //Code goes here.
-            DrawAllObjects(args);
+            DrawLightSources(args);
+            DrawScene(args);
             GL.Flush();
             Context.SwapBuffers();
             base.OnRenderFrame(args);
 
 
         }
+
+        private void DrawScene(FrameEventArgs args)
+        {
+            ShaderProgram.Use();
+            //Code goes here.
+            TrunLighsOn();
+            DrawAllObjects(args);
+        }
+
     }
 }

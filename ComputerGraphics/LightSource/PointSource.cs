@@ -16,16 +16,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ComputerGraphics.GraphObjects
+namespace ComputerGraphics.LightSource
 {
-    class Sphere : GraphObject
+    class PointSource : LightObject
     {
         public float Radius { get; set; }
-        public Sphere(): base()
+        public PointSource() : base()
         {
         }
 
-        public Sphere(Vector3 refpoint,float radius ) : base(refpoint, radius, radius)
+        public PointSource(Vector3 refpoint, float radius) : base(refpoint, radius, radius)
         {
             Radius = radius;
         }
@@ -39,12 +39,12 @@ namespace ComputerGraphics.GraphObjects
             }
             else
             {
-                GL.DrawArrays(PrimitiveType.LineLoop, 0, LocalVertices.Count);
+                GL.DrawArrays(PrimitiveType.LineStrip, 0, LocalVertices.Count);
             }
 
         }
 
-      
+
 
         protected override bool ImportStandtradShapeData()
         {
@@ -55,7 +55,7 @@ namespace ComputerGraphics.GraphObjects
                 for (int j = 0; j < MeshPolygons[i].Vertices.Length; j++)
                 {
                     LocalVertices.Add(MeshPolygons[i].Vertices[j]);
-                    
+
                 }
 
             }

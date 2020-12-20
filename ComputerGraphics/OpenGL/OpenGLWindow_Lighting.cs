@@ -6,7 +6,7 @@
  *
  * Ver  Date         By     Purpose
  * ---  ----------- -----   --------------------------------------------------------------------
- * 01   2020-12-05  AMG     Created the initial version.
+ * 01   2020-12-20  AMG     Created the initial version.
  *************************************************************************************************/
 
 using ComputerGraphics.GraphObjects;
@@ -27,26 +27,40 @@ namespace ComputerGraphics
 {
     internal partial class OpenGLWindow : GameWindow
     {
-        List<GraphObjects.GraphObject> _graphObjects = new List<ComputerGraphics.GraphObjects.GraphObject>();
-        private void DrawAllObjects(FrameEventArgs args)
+        List<LightSource.LightObject> _lighObjects = new List<LightSource.LightObject>();
+        public void AddLightSource(LightSource.LightObject source)
         {
+            _lighObjects.Add(source);
+        }
+        /// <summary>
+        /// Creates light sources
+        /// </summary>
+        private void OnLoadLights()
+        {
+            foreach (var obj in _lighObjects)
+            {
+                obj.OnLoad(LightingShaderProgram);
+            }
+        }
 
-            foreach (var obj in _graphObjects)
+        private void SetAmbientLight()
+        {
+            ShaderProgram.SetVector3(Shader.ShaderMatrix.lightColor, new Vector3(0.5f, 0.5f, 0.5f));
+        }
+        private void TrunLighsOn()
+        {
+            SetAmbientLight();
+        }
+        /// <summary>
+        /// Draw light sources into the scene
+        /// </summary>
+        private void DrawLightSources(FrameEventArgs args)
+        {
+            LightingShaderProgram.Use();
+            foreach (var obj in _lighObjects)
             {
                 obj.OnRenderFrame(args, this);
             }
         }
-        private void LoadVertexArrayInAllObjects()
-        {
-
-            foreach (var obj in _graphObjects)
-            {
-                obj.OnLoad(ShaderProgram);
-            }
-
-
-
-        }
-        
     }
 }

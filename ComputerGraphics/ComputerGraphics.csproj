@@ -7,15 +7,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="OpenGL\shader.vert" />
     <None Remove="shader.frag" />
     <None Remove="shader.vert" />
+    <None Remove="Shaders\shader_Light.frag" />
+    <None Remove="Shaders\shader_Light.vert" />
+    <None Remove="Shaders\shader_Light1.frag" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="shader.frag">
+    <Content Include="Shaders\shader_Light.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="shader.vert">
+    <Content Include="Shaders\shader_Light.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shader_Light1.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shader_Light1.vert">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shader.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Shaders\shader.vert">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
