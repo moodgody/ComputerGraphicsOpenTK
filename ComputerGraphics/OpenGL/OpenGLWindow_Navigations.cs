@@ -60,18 +60,22 @@ namespace ComputerGraphics
             {
                 _camera.MoveUp();
             }
-            else if (input.IsKeyDown(Keys.LeftShift))
+            else if (input.IsKeyDown(Keys.B))
             {
                 _camera.MoveDown();
             }
+            else if(input.IsKeyDown(Keys.M))
+            {
+                _camera.Reset();
+            }
             else
             {
-
+               
             }
         }
         private void _camera_OnCameraMove()
         {
-            this.Projection *= _camera.View;
+            this.Projection = OriginalProjection * _camera.View;
         }
         Dictionary<Navigations, NavigationFunction> _navigationFunction = new Dictionary<Navigations, NavigationFunction>();
         private void LoadNavigationFunctions()

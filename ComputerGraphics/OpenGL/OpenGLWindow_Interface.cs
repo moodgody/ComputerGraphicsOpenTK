@@ -32,6 +32,7 @@ namespace ComputerGraphics
         public Shader LightingShaderProgram;
 
         public Matrix4 View { get; private set; }
+        public Matrix4 OriginalProjection { get; private set; }
         public Matrix4 Projection { get; private set; }
         #endregion
 

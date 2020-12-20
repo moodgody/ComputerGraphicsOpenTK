@@ -43,7 +43,7 @@ namespace ComputerGraphics.Camera
             CameraPosition = position;
             CameraTarget = cameraTarget;
             Up = Vector3.Normalize(up);
-            Speed = 0.01f;
+            Speed = 0.001f;
 
             UpdateConfigurations();
 
@@ -53,10 +53,7 @@ namespace ComputerGraphics.Camera
 
         public StandardCamera()
         {
-            CameraPosition = new Vector3(0.0f, 0.0f, 3.0f);
-            CameraTarget = new Vector3(0.0f, 0.0f, 0.0f);
-            Up = Vector3.UnitY;
-            Speed = 0.01f;
+            Reset();
             UpdateConfigurations();
 
         }
@@ -64,6 +61,15 @@ namespace ComputerGraphics.Camera
         internal void MoveLeft()
         {
             CameraPosition -= Vector3.Normalize(Vector3.Cross(_front, Up)) * Speed; //Left
+            UpdateConfigurations();
+        }
+
+        internal void Reset()
+        {
+            CameraPosition = new Vector3(0.0f, 0.0f, 3.0f);
+            CameraTarget = new Vector3(0.0f, 0.0f, 0.0f);
+            Up = Vector3.UnitY;
+            Speed = 0.0001f;
             UpdateConfigurations();
         }
 
@@ -81,7 +87,7 @@ namespace ComputerGraphics.Camera
 
         internal void MoveDown()
         {
-            CameraPosition += Up * Speed; //Up 
+            CameraPosition -= Up * Speed; //Up 
             UpdateConfigurations();
         }
 
