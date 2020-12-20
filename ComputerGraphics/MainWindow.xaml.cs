@@ -59,6 +59,8 @@ namespace ComputerGraphics
 
         private static void ConstructScene(OpenGLWindow ogl)
         {
+            
+
             ogl.AddLightSource(new LightSource.PointSource(new Vector3(-3.0f, 5.0f, -10.0f), 0.2f));
             ogl.AddGraph(new GraphObjects.Rectangle(new Vector3(3.0f, 0.0f, 0.1f), 10.0f, 5.0f));
             ogl.AddGraph(new GraphObjects.Triangle(new Vector3(5.0f, 5.0f, -10.0f), 10.0f, 5.0f));

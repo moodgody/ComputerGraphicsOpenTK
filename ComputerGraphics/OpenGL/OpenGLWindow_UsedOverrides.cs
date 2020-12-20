@@ -73,8 +73,8 @@ namespace ComputerGraphics
 
             float aspectRatio =(viewport_world_width_units/ width) / (viewport_world_Height_units/ height);
             GL.Viewport(0, 0, e.Width, e.Height);
-            
-            this.Projection = GraphObjects.MatrixMath.PerspectiveProjection(MathHelper.DegreesToRadians(45.0), aspectRatio, viewport_world_width_units, viewport_world_Height_units, 0.1f, 100.0f); 
+            this.View = _camera.View;
+            this.Projection = GraphObjects.MatrixMath.PerspectiveProjection(MathHelper.DegreesToRadians(45.0), aspectRatio, viewport_world_width_units, viewport_world_Height_units, 0.1f, 100.0f) * this.View; 
             //this.Projection = GraphObjects.MatrixMath.OrthogonalProjection(30.0f,20.0f,0.1f,100.0f);
 
 
@@ -101,5 +101,29 @@ namespace ComputerGraphics
             DrawAllObjects(args);
         }
 
+        protected override void OnUpdateFrame(FrameEventArgs args)
+        {
+            base.OnUpdateFrame(args);
+            if (!IsFocused)
+            {
+                return;
+            }
+            
+            input =  KeyboardState;
+
+            if (input.IsKeyDown(Keys.Escape))
+            {
+                Dispose();
+            }
+            else
+            {
+                ProcessNavigation(input);
+                //_navigationFunction[GetNavigation()](1);
+            }
+
+
+        }
+
+        
     }
 }

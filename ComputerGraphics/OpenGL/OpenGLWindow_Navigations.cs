@@ -26,6 +26,7 @@ namespace ComputerGraphics
 {
     internal partial class OpenGLWindow : GameWindow
     {
+        Camera.StandardCamera _camera = new Camera.StandardCamera();
         KeyboardState input;
         delegate void NavigationFunction(float value);
         enum Navigations
@@ -36,38 +37,61 @@ namespace ComputerGraphics
             Right,
             None
         }
+
+        private void ProcessNavigation(KeyboardState input)
+        {
+            if(input.IsKeyDown(Keys.W))
+            {
+                _camera.Forward();
+            }
+            else if(input.IsKeyDown(Keys.S))
+            {
+                _camera.Backward();
+            }
+            else if (input.IsKeyDown(Keys.A))
+            {
+                _camera.MoveLeft();
+            }
+            else if (input.IsKeyDown(Keys.D))
+            {
+                _camera.MoveRight();
+            }
+            else if (input.IsKeyDown(Keys.Space))
+            {
+                _camera.MoveUp();
+            }
+            else if (input.IsKeyDown(Keys.LeftShift))
+            {
+                _camera.MoveDown();
+            }
+            else
+            {
+
+            }
+        }
+        private void _camera_OnCameraMove()
+        {
+            this.Projection *= _camera.View;
+        }
         Dictionary<Navigations, NavigationFunction> _navigationFunction = new Dictionary<Navigations, NavigationFunction>();
         private void LoadNavigationFunctions()
         {
-            _navigationFunction.Add(Navigations.Forward, MoveTheModeltome);
-            _navigationFunction.Add(Navigations.Backward, MoveTheModelAway);
-            _navigationFunction.Add(Navigations.Left, MoveModelLeft);
-            _navigationFunction.Add(Navigations.Right, MoveModelRight);
-            _navigationFunction.Add(Navigations.None, NoNavigation);
+            _camera.OnCameraMove += _camera_OnCameraMove;
+            //_navigationFunction.Add(Navigations.Forward, MoveTheModeltome);
+            //_navigationFunction.Add(Navigations.Backward, MoveTheModelAway);
+            //_navigationFunction.Add(Navigations.Left, MoveModelLeft);
+            //_navigationFunction.Add(Navigations.Right, MoveModelRight);
+            //_navigationFunction.Add(Navigations.None, NoNavigation);
         }
+
+       
 
         private void NoNavigation(float value)
         {
             //Todo: do nothing
         }
 
-        protected override void OnUpdateFrame(FrameEventArgs args)
-        {
-            base.OnUpdateFrame(args);
-            input = KeyboardState;
-
-            if (input.IsKeyDown(Keys.Escape))
-            {
-                Dispose();
-            }
-            else
-            {
-               _navigationFunction[GetNavigation()](1);
-            }
-           
-           
-        }
-
+ 
         private Navigations GetNavigation()
         {
             return input.IsKeyDown(Keys.Up) ? Navigations.Forward :
