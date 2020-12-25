@@ -81,73 +81,8 @@ namespace ComputerGraphics
         private void LoadNavigationFunctions()
         {
             _camera.OnCameraMove += _camera_OnCameraMove;
-            //_navigationFunction.Add(Navigations.Forward, MoveTheModeltome);
-            //_navigationFunction.Add(Navigations.Backward, MoveTheModelAway);
-            //_navigationFunction.Add(Navigations.Left, MoveModelLeft);
-            //_navigationFunction.Add(Navigations.Right, MoveModelRight);
-            //_navigationFunction.Add(Navigations.None, NoNavigation);
         }
 
        
-
-        private void NoNavigation(float value)
-        {
-            //Todo: do nothing
-        }
-
- 
-        private Navigations GetNavigation()
-        {
-            return input.IsKeyDown(Keys.Up) ? Navigations.Forward :
-                    input.IsKeyDown(Keys.Down) ? Navigations.Backward :
-                    input.IsKeyDown(Keys.Left) ? Navigations.Left :
-                    input.IsKeyDown(Keys.Right) ? Navigations.Right :
-                    Navigations.None;
-        }
-
-        private void MoveTheModelAway(float v)
-        {
-            //Model *= Matrix4.CreateTranslation(-Vector3.UnitZ);
-            //GL.MatrixMode(MatrixMode.Modelview);
-            //GL.Translate(Vector3.UnitZ * v);
-        }
-
-
-
-        private void RotateModelRight(float v)
-        {
-            
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Rotate(v, -Vector3.UnitY);
-        }
-
-        private void RotateModelLeft(float v)
-        {
-                        GL.MatrixMode(MatrixMode.Modelview);
-            GL.Rotate(v, Vector3.UnitY);
-        }
-
-
-
-        private void MoveTheModeltome(float v)
-        {
-            //View *= Matrix4.CreateTranslation(Vector3.UnitZ );
-            //GL.MatrixMode(MatrixMode.Modelview);
-            //GL.Translate(-Vector3.UnitZ * v);
-        }
-
-        private void MoveModelRight(float v)
-        {
-           // View *= Matrix4.CreateTranslation(Vector3.UnitX );
-            //GL.MatrixMode(MatrixMode.Modelview);
-            //GL.Translate(Vector3.UnitX * v);
-        }
-        private Vector3 dlta;
-        private void MoveModelLeft(float v)
-        {
-           // View *= Matrix4.CreateTranslation(-Vector3.UnitX);
-            //GL.MatrixMode(MatrixMode.Modelview);
-            //GL.Translate(-Vector3.UnitX * v);
-        }
     }
 }

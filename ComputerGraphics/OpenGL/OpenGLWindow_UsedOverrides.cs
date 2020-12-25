@@ -69,15 +69,17 @@ namespace ComputerGraphics
             float height = e.Height;
             float width = e.Width;
             float viewport_world_width_units = 30.0f;
-            float viewport_world_Height_units = 20.0f;
+            float viewport_world_Height_units = 30.0f;
 
             float aspectRatio =(viewport_world_width_units/ width) / (viewport_world_Height_units/ height);
             GL.Viewport(0, 0, e.Width, e.Height);
             this.View = _camera.View;
-           // this.OriginalProjection = GraphObjects.MatrixMath.PerspectiveProjection(MathHelper.DegreesToRadians(45.0), aspectRatio, viewport_world_width_units, viewport_world_Height_units, 0.1f, 100.0f);
-            this.OriginalProjection = GraphObjects.MatrixMath.OrthogonalProjection(30.0f, 20.0f, 0.1f, 100.0f);
+            this.OriginalProjection = GraphObjects.MatrixMath.PerspectiveProjection(MathHelper.DegreesToRadians(45.0), 1.0f, viewport_world_width_units, viewport_world_Height_units, 0.1f, 100.0f);
+            //this.OriginalProjection = GraphObjects.MatrixMath.PerspectiveProjection3(MathHelper.DegreesToRadians(45.0), 1.0f, viewport_world_width_units, viewport_world_Height_units, 0.1f, 100.0f);
+            //this.OriginalProjection = GraphObjects.MatrixMath.PerspectiveProjection_2(MathHelper.DegreesToRadians(45.0),  0.1f, 100.0f);
+            //this.OriginalProjection = GraphObjects.MatrixMath.OrthogonalProjection(30.0f, 20.0f, 0.1f, 100.0f);
             this.Projection = OriginalProjection * this.View; 
-            //this.Projection = GraphObjects.MatrixMath.OrthogonalProjection(30.0f,20.0f,0.1f,100.0f);
+            
 
 
 
@@ -99,7 +101,7 @@ namespace ComputerGraphics
         {
             ShaderProgram.Use();
             //Code goes here.
-            TrunLighsOn();
+            TrunLightsOn();
             DrawAllObjects(args);
         }
 

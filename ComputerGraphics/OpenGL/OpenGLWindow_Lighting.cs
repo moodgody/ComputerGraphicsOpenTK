@@ -47,7 +47,7 @@ namespace ComputerGraphics
         {
             ShaderProgram.SetVector3(Shader.ShaderMatrix.lightColor, new Vector3(0.5f, 0.5f, 0.5f));
         }
-        private void TrunLighsOn()
+        private void TrunLightsOn()
         {
             SetAmbientLight();
         }
