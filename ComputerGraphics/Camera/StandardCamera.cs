@@ -66,8 +66,8 @@ namespace ComputerGraphics.Camera
 
         internal void Reset()
         {
-            CameraPosition = new Vector3(0.0f, 0.0f, 3.0f);
-            CameraTarget = new Vector3(0.0f, 0.0f, 0.0f);
+            CameraPosition = new Vector3(0.0f, 0.0f, 0.1f);
+            CameraTarget = new Vector3(0.0f, 0.0f, -10.0f);
             Up = Vector3.UnitY;
             Speed = 0.0001f;
             UpdateConfigurations();

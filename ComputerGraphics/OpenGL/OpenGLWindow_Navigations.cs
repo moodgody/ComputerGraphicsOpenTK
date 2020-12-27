@@ -75,7 +75,7 @@ namespace ComputerGraphics
         }
         private void _camera_OnCameraMove()
         {
-            this.Projection = OriginalProjection * _camera.View;
+            this.Projection = _camera.View;// OriginalProjection * _camera.View;
         }
         Dictionary<Navigations, NavigationFunction> _navigationFunction = new Dictionary<Navigations, NavigationFunction>();
         private void LoadNavigationFunctions()
